@@ -3,9 +3,9 @@ from data.dataset import SENDataset
 
 def main():
     dataset = SENDataset(
-        r"C:\Users\nvatu\OneDrive\Desktop\s2idata\train_flower_en2vi.json",
-        r"C:\Users\nvatu\OneDrive\Desktop\s2idata\image_oxford\image_oxford\train",
-        r"C:\Users\nvatu\OneDrive\Desktop\s2idata\oxford\oxford\train",
+        r"/kaggle/input/s2igan-oxford/s2igan_oxford/train_flower_en2vi.json",
+        r"/kaggle/input/s2igan-oxford/s2igan_oxford/image_oxford/image_oxford",
+        r"/kaggle/input/s2igan-oxford/s2igan_oxford/oxford_audio/oxford_audio",
     )
 
 

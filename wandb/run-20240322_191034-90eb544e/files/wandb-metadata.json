@@ -1,0 +1,22 @@
+{
+    "os": "macOS-14.4-arm64-arm-64bit",
+    "python": "3.9.18",
+    "heartbeatAt": "2024-03-22T12:10:35.892297",
+    "startedAt": "2024-03-22T12:10:34.780450",
+    "docker": null,
+    "cpu_count": 8,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/Users/taiduong/TCode/ysc/S2IGAN/train_sen.py",
+    "codePath": "train_sen.py",
+    "git": {
+        "remote": "https://github.com/TaiDuongRepo/S2IGAN.git",
+        "commit": "c029f439f9cb77575960f5df637263c5886a6e0d"
+    },
+    "email": "taiduong1301@gmail.com",
+    "root": "/Users/taiduong/TCode/ysc/S2IGAN",
+    "host": "Mactoro-dono",
+    "username": "taiduong",
+    "executable": "/Users/taiduong/TCode/ysc/S2IGAN/.venv/bin/python"
+}
