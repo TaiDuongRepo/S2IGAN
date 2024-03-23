@@ -126,9 +126,9 @@ def main(cfg: DictConfig):
                 log_wandb,
             )
 
-            torch.save(speech_encoder.state_dict(), "/kaggle/working/save_ckpt/speech_encoder.pt")
-            torch.save(image_encoder.state_dict(), "/kaggle/working/save_ckpt/image_encoder.pt")
-            torch.save(classifier.state_dict(), "/kaggle/working/save_ckpt/classfier.pt")
+            torch.save(speech_encoder.state_dict(), "save_ckpt/speech_encoder.pt")
+            torch.save(image_encoder.state_dict(), "save_ckpt/image_encoder.pt")
+            torch.save(classifier.state_dict(), "save_ckpt/classfier.pt")
 
     print("Train result:", train_result)
     print("Eval result:", eval_result)
