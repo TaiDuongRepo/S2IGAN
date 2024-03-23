@@ -65,3 +65,4 @@ loss:
 ckpt:
   speech_encoder: null
   image_encoder: null
+  classifier: null
