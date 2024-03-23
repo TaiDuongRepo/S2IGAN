@@ -6,7 +6,7 @@ data:
     win_length: 250
     hop_length: 100
     n_class: 103 # get from dataset externally
-    batch_size: 64
+    batch_size: 16
     num_workers: 14
   train:
     json_file: /kaggle/input/s2igan-oxford/s2igan_oxford/train_flower_en2vi.json
