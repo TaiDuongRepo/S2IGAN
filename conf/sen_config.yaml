@@ -9,18 +9,18 @@ data:
     batch_size: 40
     num_workers: 20
   train:
-    json_file: ../train_flower_en2vi.json
-    img_path: ../image_oxford/image_oxford
-    audio_path: ../oxford_audio/oxford_audio
+    json_file: /kaggle/input/s2igan-oxford/s2igan_oxford/train_flower_en2vi.json
+    img_path: /kaggle/input/s2igan-oxford/s2igan_oxford/image_oxford/image_oxford
+    audio_path: /kaggle/input/s2igan-oxford/s2igan_oxford/oxford_audio/oxford_audio
     input_size: ${data.general.input_size}
     n_fft: ${data.general.n_fft}
     n_mels: ${data.general.n_mels}
     win_length: ${data.general.win_length}
     hop_length: ${data.general.hop_length}
   test:
-    json_file: ../test_flower_en2vi.json
-    img_path: ../image_oxford/image_oxford
-    audio_path: ../oxford_audio/oxford_audio
+    json_file: /kaggle/input/s2igan-oxford/s2igan_oxford/test_flower_en2vi.json
+    img_path: /kaggle/input/s2igan-oxford/s2igan_oxford/image_oxford/image_oxford
+    audio_path: /kaggle/input/s2igan-oxford/s2igan_oxford/oxford_audio/oxford_audio
     input_size: ${data.general.input_size}
     n_fft: ${data.general.n_fft}
     n_mels: ${data.general.n_mels}
