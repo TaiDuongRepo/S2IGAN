@@ -15,6 +15,8 @@ from s2igan.loss import SENLoss
 from s2igan.sen import ImageEncoder, SpeechEncoder
 from s2igan.sen.utils import sen_train_epoch, sen_eval_epoch
 
+import os
+
 config_path = "conf"
 config_name = "sen_config"
 
@@ -126,9 +128,14 @@ def main(cfg: DictConfig):
                 log_wandb,
             )
 
-            torch.save(speech_encoder.state_dict(), "save_ckpt/speech_encoder.pt")
-            torch.save(image_encoder.state_dict(), "save_ckpt/image_encoder.pt")
-            torch.save(classifier.state_dict(), "save_ckpt/classfier.pt")
+            save_dir = "/kaggle/working/save_ckpt"
+            if not os.path.exists(save_dir):
+                os.makedirs(save_dir)
+
+            # Tiếp tục lưu trữ trọng số của mô hình
+            torch.save(speech_encoder.state_dict(), os.path.join(save_dir, "speech_encoder.pt"))
+            torch.save(image_encoder.state_dict(), os.path.join(save_dir, "image_encoder.pt"))
+            torch.save(classifier.state_dict(), os.path.join(save_dir, "classifier.pt"))
 
     print("Train result:", train_result)
     print("Eval result:", eval_result)
