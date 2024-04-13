@@ -7,15 +7,13 @@ from omegaconf import DictConfig, OmegaConf
 from torch import nn
 from torch.utils.data import DataLoader
 from torchsummary import summary
-
+import os
 import wandb
 from data.data_collator import sen_collate_fn
 from data.dataset import SENDataset
 from s2igan.loss import SENLoss
 from s2igan.sen import ImageEncoder, SpeechEncoder
 from s2igan.sen.utils import sen_train_epoch, sen_eval_epoch
-
-import os
 
 config_path = "conf"
 config_name = "sen_config"
@@ -29,8 +27,6 @@ def main(cfg: DictConfig):
     rnn_dropout = cfg.model.speech_encoder.rnn_dropout
     lr = cfg.optimizer.lr
     wandb.init(project="speech2image", name=f"SEN_bs{bs}_lr{lr}_attn{attn_heads}_ad{attn_dropout}_rd{rnn_dropout}")
-
-    # wandb.init(project="speech2image", name="SEN lr 1e-4 batch 16")
 
     device = "cuda:0" if torch.cuda.is_available() else "cpu"
     multi_gpu = torch.cuda.device_count() > 1
@@ -143,6 +139,10 @@ def main(cfg: DictConfig):
             torch.save(speech_encoder.state_dict(), os.path.join(save_dir, "speech_encoder.pt"))
             torch.save(image_encoder.state_dict(), os.path.join(save_dir, "image_encoder.pt"))
             torch.save(classifier.state_dict(), os.path.join(save_dir, "classifier.pt"))
+
+            # torch.save(speech_encoder.state_dict(), "/kaggle/working/save_ckpt/speech_encoder.pt")
+            # torch.save(image_encoder.state_dict(), "/kaggle/working/save_ckpt/image_encoder.pt")
+            # torch.save(classifier.state_dict(), "/kaggle/working/save_ckpt/classifier.pt")
 
     print("Train result:", train_result)
     print("Eval result:", eval_result)
