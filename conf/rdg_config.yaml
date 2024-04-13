@@ -59,7 +59,7 @@ optimizer:
 
 scheduler:
   use: true
-  pct_start: 0.5
+  pct_start: 0.1 # 0.5
 
 experiment:
   train: true
@@ -80,3 +80,8 @@ loss:
 ckpt:
   speech_encoder: ckpt/speech_encoder.pt
   image_encoder: ckpt/image_encoder.pt
+  generator: null
+  discrminator_64: null
+  discrminator_128: null
+  discrminator_256: null
+  relation_classifier: null
