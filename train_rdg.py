@@ -1,5 +1,7 @@
 import argparse
 
+import os
+
 import hydra
 import torch
 from dotenv import load_dotenv
@@ -29,8 +31,16 @@ config_name = "rdg_config"
 
 @hydra.main(version_base=None, config_path=config_path, config_name=config_name)
 def main(cfg: DictConfig):
+    bs = cfg.data.general.batch_size
+    attn_heads = cfg.model.speech_encoder.attn_heads
+    attn_dropout = cfg.model.speech_encoder.attn_dropout
+    rnn_dropout = cfg.model.speech_encoder.rnn_dropout
+    lr = cfg.optimizer.lr
     if cfg.experiment.log_wandb:
-        wandb.init(project="speech2image", name="RDG")
+        wandb.init(project="speech2image_RDG", name=f"RDG_bs{bs}_lr{lr}_attn{attn_heads}_ad{attn_dropout}_rd{rnn_dropout}")
+    
+    # if cfg.experiment.log_wandb:
+    #     wandb.init(project="speech2image", name="RDG")
 
     device = "cuda:0" if torch.cuda.is_available() else "cpu"
     multi_gpu = torch.cuda.device_count() > 1
@@ -161,6 +171,25 @@ def main(cfg: DictConfig):
                 epoch,
                 log_wandb,
             )
+
+            save_dir = "/kaggle/working/save_ckpt"
+            if not os.path.exists(save_dir):
+                os.makedirs(save_dir)
+
+            torch.save({
+                'epoch': epoch,
+                'generator': generator.state_dict(),
+                'discrminator_64': discrminator_64.state_dict(),
+                'discrminator_128': discrminator_128.state_dict(),
+                'discrminator_256': discrminator_256.state_dict(),
+                'relation_classifier': relation_classifier.state_dict(),
+                'image_encoder': image_encoder.state_dict(),
+                'speech_encoder': speech_encoder.state_dict(),
+                'optimizer_generator': optimizer_generator.state_dict(),
+                'optimizer_discrminator': optimizer_discrminator.state_dict(),
+                'optimizer_rs': optimizer_rs.state_dict(),
+            })
+
     print("Train result:", train_result)
 
 

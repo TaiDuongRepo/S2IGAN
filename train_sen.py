@@ -23,7 +23,14 @@ config_name = "sen_config"
 
 @hydra.main(version_base=None, config_path=config_path, config_name=config_name)
 def main(cfg: DictConfig):
-    wandb.init(project="speech2image", name="SEN")
+    bs = cfg.data.general.batch_size
+    attn_heads = cfg.model.speech_encoder.attn_heads
+    attn_dropout = cfg.model.speech_encoder.attn_dropout
+    rnn_dropout = cfg.model.speech_encoder.rnn_dropout
+    lr = cfg.optimizer.lr
+    wandb.init(project="speech2image", name=f"SEN_bs{bs}_lr{lr}_attn{attn_heads}_ad{attn_dropout}_rd{rnn_dropout}")
+
+    # wandb.init(project="speech2image", name="SEN lr 1e-4 batch 16")
 
     device = "cuda:0" if torch.cuda.is_available() else "cpu"
     multi_gpu = torch.cuda.device_count() > 1
