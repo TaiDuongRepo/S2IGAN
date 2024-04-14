@@ -193,8 +193,10 @@ def main(cfg: DictConfig):
             torch.save(discrminator_256.state_dict(), os.path.join(save_dir, "discrminator_256.pt"))
             torch.save(relation_classifier.state_dict(), os.path.join(save_dir, "relation_classifier.pt"))
             torch.save(optimizer_generator.state_dict(), os.path.join(save_dir, "optimizer_generator.pt"))
-            torch.save(optimizer_discrminator.state_dict(), os.path.join(save_dir, "optimizer_discrminator.pt"))
+            # torch.save(optimizer_discrminator.state_dict(), os.path.join(save_dir, "optimizer_discrminator.pt"))
             torch.save(optimizer_rs.state_dict(), os.path.join(save_dir, "optimizer_rs.pt"))
+            for key in optimizer_discrminator.keys():
+                torch.save(optimizer_discrminator[key].state_dict(), os.path.join(save_dir, f"optimizer_discrminator_{key}.pt"))
         
     print("Train result:", train_result)
 
