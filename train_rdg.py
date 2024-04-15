@@ -150,9 +150,10 @@ def main(cfg: DictConfig):
     if cfg.ckpt.optimizer:
         optimizer_rs.load_state_dict(torch.load(cfg.ckpt.optimizer.optimizer_rs))
         optimizer_generator.load_state_dict(torch.load(cfg.ckpt.optimizer.optimizer_generator))
-        for key in optimizer_discrminator.keys():
-            optimizer_discrminator[key].load_state_dict(torch.load(cfg.ckpt.optimizer[f"optimizer_discrminator_{key}"]))
-
+        optimizer_discrminator[64].load_state_dict(torch.load(cfg.ckpt.optimizer.optimizer_discrminator_64))
+        optimizer_discrminator[128].load_state_dict(torch.load(cfg.ckpt.optimizer.optimizer_discrminator_128))
+        optimizer_discrminator[256].load_state_dict(torch.load(cfg.ckpt.optimizer.optimizer_discrminator_256))
+        
     steps_per_epoch = len(train_dataloader)
     sched_dict = dict(
         epochs=cfg.experiment.max_epoch,
