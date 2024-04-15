@@ -73,23 +73,23 @@ def main(cfg: DictConfig):
     if cfg.ckpt.generator:
         print("Loading Generator state dict...")
         print(generator.load_state_dict(torch.load(cfg.ckpt.generator)))
-        set_non_grad(generator)
+        # set_non_grad(generator)
     if cfg.ckpt.discrminator_64:
         print("Loading Discriminator 64 state dict...")
         print(discrminator_64.load_state_dict(torch.load(cfg.ckpt.discrminator_64)))
-        set_non_grad(discrminator_64)
+        # set_non_grad(discrminator_64)
     if cfg.ckpt.discrminator_128:
         print("Loading Discriminator 128 state dict...")
         print(discrminator_128.load_state_dict(torch.load(cfg.ckpt.discrminator_128)))
-        set_non_grad(discrminator_128)
+        # set_non_grad(discrminator_128)
     if cfg.ckpt.discrminator_256:
         print("Loading Discriminator 256 state dict...")
         print(discrminator_256.load_state_dict(torch.load(cfg.ckpt.discrminator_256)))
-        set_non_grad(discrminator_256)
+        # set_non_grad(discrminator_256)
     if cfg.ckpt.relation_classifier:
         print("Loading Relation Classifier state dict...")
         print(relation_classifier.load_state_dict(torch.load(cfg.ckpt.relation_classifier)))
-        set_non_grad(relation_classifier)
+        # set_non_grad(relation_classifier)
 
     if multi_gpu:
         generator = nn.DataParallel(generator, device_ids=device_ids)

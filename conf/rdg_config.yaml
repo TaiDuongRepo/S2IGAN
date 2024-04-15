@@ -86,8 +86,8 @@ ckpt:
   discrminator_256: ckpt/discrminator_256.pt
   relation_classifier: ckpt/relation_classifier.pt
   optimizer:
-    optimizer_discriminator_64: ckpt/optimizer_discriminator_64.pt
-    optimizer_discriminator_128: ckpt/optimizer_discriminator_128.pt
-    optimizer_discriminator_256: ckpt/optimizer_discriminator_256.pt
+    optimizer_discrminator_64: ckpt/optimizer_discrminator_64.pt
+    optimizer_discrminator_128: ckpt/optimizer_discrminator_128.pt
+    optimizer_discrminator_256: ckpt/optimizer_discrminator_256.pt
     optimizer_generator: ckpt/optimizer_generator.pt
     optimizer_rs: ckpt/optimizer_rs.pt
