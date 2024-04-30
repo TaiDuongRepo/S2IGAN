@@ -209,6 +209,6 @@ class DenselyStackedGenerator(nn.Module):
         h1 = self.F1(h0, c_code)
         h2 = self.F2(h1, c_code)
 
-        fake_imgs = {64: self.G0(h0), 128: self.G1(h1), 256: self.G2(h2)}
+        fake_imgs = {32: self.G0(h0), 64: self.G1(h1), 128: self.G2(h2)}
 
         return fake_imgs, mu, logvar
