@@ -26,31 +26,19 @@ class DownScale16TimesBlock(nn.Module):
     def __init__(self, disc_dim: int):
         super().__init__()
         self.seq = nn.Sequential(
+            # --> state size. ndf x in_size/2 x in_size/2
             nn.Conv2d(3, disc_dim, kernel_size=4, stride=2, padding=1, bias=False,),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.Conv2d(
-                disc_dim, disc_dim * 2, kernel_size=4, stride=2, padding=1, bias=False,
-            ),
+            # --> state size 2ndf x x in_size/4 x in_size/4
+            nn.Conv2d(disc_dim, disc_dim * 2, kernel_size=4, stride=2, padding=1, bias=False,),
             nn.BatchNorm2d(disc_dim * 2),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.Conv2d(
-                disc_dim * 2,
-                disc_dim * 4,
-                kernel_size=4,
-                stride=2,
-                padding=1,
-                bias=False,
-            ),
+            # --> state size 4ndf x in_size/8 x in_size/8
+            nn.Conv2d(disc_dim * 2, disc_dim * 4, kernel_size=4, stride=2, padding=1, bias=False,),
             nn.BatchNorm2d(disc_dim * 4),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.Conv2d(
-                disc_dim * 4,
-                disc_dim * 8,
-                kernel_size=4,
-                stride=2,
-                padding=1,
-                bias=False,
-            ),
+            # --> state size 8ndf x in_size/16 x in_size/16
+            nn.Conv2d(disc_dim * 4, disc_dim * 8, kernel_size=4, stride=2, padding=1, bias=False,),
             nn.BatchNorm2d(disc_dim * 8),
             nn.LeakyReLU(0.2, inplace=True),
         )
