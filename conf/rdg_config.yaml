@@ -91,3 +91,7 @@ ckpt:
     optimizer_discrminator_256: ckpt/optimizer_discrminator_256.pt
     optimizer_generator: ckpt/optimizer_generator.pt
     optimizer_rs: ckpt/optimizer_rs.pt
+
+kaggle:
+  name: "rdg"
+  project: "speech2image_RDG"
