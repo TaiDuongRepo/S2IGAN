@@ -147,7 +147,7 @@ def main(cfg: DictConfig):
         "rs": optimizer_rs,
     }
 
-    if cfg.ckpt.optimizer:
+    if cfg.ckpt.optimizer.optimizer_generator:
         optimizer_rs.load_state_dict(torch.load(cfg.ckpt.optimizer.optimizer_rs))
         optimizer_generator.load_state_dict(torch.load(cfg.ckpt.optimizer.optimizer_generator))
         optimizer_discrminator[64].load_state_dict(torch.load(cfg.ckpt.optimizer.optimizer_discrminator_64))
