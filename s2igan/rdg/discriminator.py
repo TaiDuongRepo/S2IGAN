@@ -51,11 +51,7 @@ class DiscriminatorFor32By32(nn.Module):
         super().__init__()
         self.disc_dim = disc_dim
         self.gan_emb_dim = gan_emb_dim
-        self.down_scale = nn.Sequential(
-            nn.Conv2d(disc_dim, disc_dim * 2, kernel_size=4, stride=2, padding=1, bias=False),
-            nn.BatchNorm2d(disc_dim * 2),
-            nn.LeakyReLU(0.2, inplace=True),
-        )
+        self.down_scale = DownScale16TimesBlock(disc_dim*2)
         self.joint_conv = nn.Sequential(
             nn.Conv2d(
                 disc_dim * 8 + gan_emb_dim,
