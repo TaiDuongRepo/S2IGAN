@@ -190,11 +190,11 @@ def update_G(
     audio_path, sr = raw_audio[i]
 
     image_64 = torch.cat((fake_imgs[64][i:i+1], real_imgs[64][i:i+1]), 0) * 0.5 + 0.5
-    image_128 = torch.cat((fake_imgs[128][i:i+1], real_imgs[128][i:i+1]), 0) * 0.5 + 0.5
+    # image_128 = torch.cat((fake_imgs[128][i:i+1], real_imgs[128][i:i+1]), 0) * 0.5 + 0.5
     # image_256 = torch.cat((fake_imgs[256][i:i+1], real_imgs[256][i:i+1]), 0) * 0.5 + 0.5
 
     wandb.log({"train/image_64": wandb.Image(image_64)})
-    wandb.log({"train/image_128": wandb.Image(image_128)})
+    # wandb.log({"train/image_128": wandb.Image(image_128)})
     # wandb.log({"train/image_256": wandb.Image(image_256)})
     wandb.log({"train/speech_description": wandb.Audio(audio_path, sample_rate=sr)})
 
