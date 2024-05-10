@@ -190,26 +190,14 @@ class DenselyStackedGenerator(nn.Module):
             speech_emb_dim=speech_emb_dim, gan_emb_dim=gan_emb_dim
         )
 
-        # self.F0 = InitStateGenerator(in_dim=inp_dim, gen_dim=gen_dim * 16)
-        # self.G0 = ImageGenerator(gen_dim=gen_dim)
+        self.F0 = InitStateGenerator(in_dim=inp_dim, gen_dim=gen_dim * 16)
+        self.G0 = ImageGenerator(gen_dim=gen_dim)
 
-        # self.F1 = NextStageGenerator(gan_emb_dim=gan_emb_dim, gen_dim=gen_dim)
-        # self.G1 = ImageGenerator(gen_dim=gen_dim // 2)
+        self.F1 = NextStageGenerator(gan_emb_dim=gan_emb_dim, gen_dim=gen_dim)
+        self.G1 = ImageGenerator(gen_dim=gen_dim // 2)
 
-        # self.F2 = NextStageGenerator(gan_emb_dim=gan_emb_dim, gen_dim=gen_dim // 2)
-        # self.G2 = ImageGenerator(gen_dim=gen_dim // 4)
-
-        # generator image size: 32x32 -> 64x64 -> 128x128
-        self.F0 = InitStateGenerator(in_dim=inp_dim, gen_dim=gen_dim * 32)
-        self.G0 = ImageGenerator(gen_dim=gen_dim*2)
-
-        self.F1 = NextStageGenerator(gan_emb_dim=gan_emb_dim, gen_dim=gen_dim*16)
-        self.G1 = ImageGenerator(gen_dim=gen_dim)
-
-        self.F2 = NextStageGenerator(gan_emb_dim=gan_emb_dim, gen_dim=gen_dim)
-        self.G2 = ImageGenerator(gen_dim=gen_dim // 2)
-
-
+        self.F2 = NextStageGenerator(gan_emb_dim=gan_emb_dim, gen_dim=gen_dim // 2)
+        self.G2 = ImageGenerator(gen_dim=gen_dim // 4)
 
     def get_params(self):
         return [p for p in self.parameters() if p.requires_grad]
@@ -221,6 +209,6 @@ class DenselyStackedGenerator(nn.Module):
         h1 = self.F1(h0, c_code)
         h2 = self.F2(h1, c_code)
 
-        fake_imgs = {32: self.G0(h0), 64: self.G1(h1), 128: self.G2(h2)}
+        fake_imgs = {64: self.G0(h0), 128: self.G1(h1), 256: self.G2(h2)}
 
         return fake_imgs, mu, logvar
