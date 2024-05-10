@@ -15,7 +15,6 @@ from data.dataset import RDGDataset
 from s2igan.loss import KLDivergenceLoss, RSLoss
 from s2igan.rdg import (
     DenselyStackedGenerator,
-    DiscriminatorFor32By32,
     DiscriminatorFor64By64,
     DiscriminatorFor128By128,
     DiscriminatorFor256By256,
@@ -58,7 +57,6 @@ def main(cfg: DictConfig):
     )
 
     generator = DenselyStackedGenerator(**cfg.model.generator)
-    discrminator_32 = DiscriminatorFor32By32(**cfg.model.discriminator)
     discrminator_64 = DiscriminatorFor64By64(**cfg.model.discriminator)
     discrminator_128 = DiscriminatorFor128By128(**cfg.model.discriminator)
     discrminator_256 = DiscriminatorFor256By256(**cfg.model.discriminator)
@@ -78,10 +76,6 @@ def main(cfg: DictConfig):
         print("Loading Generator state dict...")
         print(generator.load_state_dict(torch.load(cfg.ckpt.generator)))
         # set_non_grad(generator)
-    if cfg.ckpt.discrminator_32:
-        print("Loading Discriminator 32 state dict...")
-        print(discrminator_32.load_state_dict(torch.load(cfg.ckpt.discrminator_32)))
-        # set_non_grad(discrminator_32)
     if cfg.ckpt.discrminator_64:
         print("Loading Discriminator 64 state dict...")
         print(discrminator_64.load_state_dict(torch.load(cfg.ckpt.discrminator_64)))
@@ -101,7 +95,6 @@ def main(cfg: DictConfig):
 
     if multi_gpu:
         generator = nn.DataParallel(generator, device_ids=device_ids)
-        discrminator_32 = nn.DataParallel(discrminator_32, device_ids=device_ids)
         discrminator_64 = nn.DataParallel(discrminator_64, device_ids=device_ids)
         #discrminator_128 = nn.DataParallel(discrminator_128, device_ids=device_ids)
         #discrminator_256 = nn.DataParallel(discrminator_256, device_ids=device_ids)
@@ -112,7 +105,6 @@ def main(cfg: DictConfig):
         speech_encoder = nn.DataParallel(speech_encoder, device_ids=device_ids)
 
     generator = generator.to(device)
-    discrminator_32 = discrminator_32.to(device)
     discrminator_64 = discrminator_64.to(device)
     # discrminator_128 = discrminator_128.to(device)
     # discrminator_256 = discrminator_256.to(device)
@@ -120,19 +112,8 @@ def main(cfg: DictConfig):
     image_encoder = image_encoder.to(device)
     speech_encoder = speech_encoder.to(device)
 
-    # try:
-    #     image_encoder = torch.compile(image_encoder)
-    #     discrminator_64 = torch.compile(discrminator_64)
-    #     discrminator_128 = torch.compile(discrminator_128)
-    #     discrminator_256 = torch.compile(discrminator_256)
-    #     relation_classifier = torch.compile(relation_classifier)
-    #     image_encoder = torch.compile(image_encoder)
-    #     speech_encoder = torch.compile(speech_encoder)
-    # except:
-    #     print("Can't activate Pytorch 2.0")
 
     discriminators = {
-        32: discrminator_32,
         64: discrminator_64,
         # 128: discrminator_128,
         # 256: discrminator_256,
@@ -161,7 +142,6 @@ def main(cfg: DictConfig):
     if cfg.ckpt.optimizer.optimizer_generator:
         optimizer_rs.load_state_dict(torch.load(cfg.ckpt.optimizer.optimizer_rs))
         optimizer_generator.load_state_dict(torch.load(cfg.ckpt.optimizer.optimizer_generator))
-        optimizer_discrminator[32].load_state_dict(torch.load(cfg.ckpt.optimizer.optimizer_discrminator_32))
         optimizer_discrminator[64].load_state_dict(torch.load(cfg.ckpt.optimizer.optimizer_discrminator_64))
         # optimizer_discrminator[128].load_state_dict(torch.load(cfg.ckpt.optimizer.optimizer_discrminator_128))
         # optimizer_discrminator[256].load_state_dict(torch.load(cfg.ckpt.optimizer.optimizer_discrminator_256))
@@ -214,7 +194,6 @@ def main(cfg: DictConfig):
             torch.save(speech_encoder.state_dict(), os.path.join(save_dir, "speech_encoder.pt"))
             torch.save(image_encoder.state_dict(), os.path.join(save_dir, "image_encoder.pt"))
             torch.save(generator.state_dict(), os.path.join(save_dir, "generator.pt"))
-            torch.save(discrminator_32.state_dict(), os.path.join(save_dir, "discrminator_32.pt"))
             torch.save(discrminator_64.state_dict(), os.path.join(save_dir, "discrminator_64.pt"))
             #torch.save(discrminator_128.state_dict(), os.path.join(save_dir, "discrminator_128.pt"))
             #torch.save(discrminator_256.state_dict(), os.path.join(save_dir, "discrminator_256.pt"))
