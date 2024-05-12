@@ -186,18 +186,18 @@ class DenselyStackedGenerator(nn.Module):
         super().__init__()
         inp_dim = latent_space_dim + gan_emb_dim
 
-        self.conditioning_augmentation = ConditioningAugmentationNetwork(
-            speech_emb_dim=speech_emb_dim, gan_emb_dim=gan_emb_dim
-        )
+        # self.conditioning_augmentation = ConditioningAugmentationNetwork(
+        #     speech_emb_dim=speech_emb_dim, gan_emb_dim=gan_emb_dim
+        # )
 
         self.F0 = InitStateGenerator(in_dim=inp_dim, gen_dim=gen_dim * 16)
         self.G0 = ImageGenerator(gen_dim=gen_dim)
 
-        self.F1 = NextStageGenerator(gan_emb_dim=gan_emb_dim, gen_dim=gen_dim)
-        self.G1 = ImageGenerator(gen_dim=gen_dim // 2)
+        # self.F1 = NextStageGenerator(gan_emb_dim=gan_emb_dim, gen_dim=gen_dim)
+        # self.G1 = ImageGenerator(gen_dim=gen_dim // 2)
 
-        self.F2 = NextStageGenerator(gan_emb_dim=gan_emb_dim, gen_dim=gen_dim // 2)
-        self.G2 = ImageGenerator(gen_dim=gen_dim // 4)
+        # self.F2 = NextStageGenerator(gan_emb_dim=gan_emb_dim, gen_dim=gen_dim // 2)
+        # self.G2 = ImageGenerator(gen_dim=gen_dim // 4)
 
     def get_params(self):
         return [p for p in self.parameters() if p.requires_grad]
@@ -206,8 +206,8 @@ class DenselyStackedGenerator(nn.Module):
         c_code, mu, logvar = self.conditioning_augmentation(speech_emb)
 
         h0 = self.F0(z_code, c_code)
-        h1 = self.F1(h0, c_code)
-        h2 = self.F2(h1, c_code)
+        # h1 = self.F1(h0, c_code)
+        # h2 = self.F2(h1, c_code)
 
         fake_imgs = {64: self.G0(h0), 128: self.G1(h1), 256: self.G2(h2)}
 
