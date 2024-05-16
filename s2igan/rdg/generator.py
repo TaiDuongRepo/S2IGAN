@@ -6,7 +6,7 @@ class ConditioningAugmentationNetwork(nn.Module):
     def __init__(
         self,
         speech_emb_dim: int = 1024,
-        gan_emb_dim: int = 128,
+        gan_emb_dim: int = 64,
         negative_slope: float = 0.2,
     ):
         super().__init__()
