@@ -98,13 +98,13 @@ def update_RS(
     one_labels = torch.ones(bs, device=device, dtype=torch.float)
     two_labels = torch.zeros(bs, device=device, dtype=torch.float) + 2
 
-    real_img = Resizer[256](origin_real_img)
-    similar_img = Resizer[256](origin_similar_img)
-    wrong_img = Resizer[256](origin_wrong_img)
+    real_img = Resizer[64](origin_real_img)
+    similar_img = Resizer[64](origin_similar_img)
+    wrong_img = Resizer[64](origin_wrong_img)
 
     real_feat = models["ied"](real_img)
     similar_feat = models["ied"](similar_img)
-    fake_feat = models["ied"](fake_imgs[256].detach())
+    fake_feat = models["ied"](fake_imgs[64].detach())
     wrong_feat = models["ied"](wrong_img)
 
     R1 = models["rs"](similar_feat.detach(), real_feat.detach())
