@@ -186,9 +186,9 @@ class DenselyStackedGenerator(nn.Module):
         super().__init__()
         inp_dim = latent_space_dim + gan_emb_dim
 
-        # self.conditioning_augmentation = ConditioningAugmentationNetwork(
-        #     speech_emb_dim=speech_emb_dim, gan_emb_dim=gan_emb_dim
-        # )
+        self.conditioning_augmentation = ConditioningAugmentationNetwork(
+            speech_emb_dim=speech_emb_dim, gan_emb_dim=gan_emb_dim
+        )
 
         self.F0 = InitStateGenerator(in_dim=inp_dim, gen_dim=gen_dim * 16)
         self.G0 = ImageGenerator(gen_dim=gen_dim)
