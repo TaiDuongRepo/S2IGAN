@@ -58,8 +58,8 @@ def main(cfg: DictConfig):
 
     generator = DenselyStackedGenerator(**cfg.model.generator)
     discrminator_64 = DiscriminatorFor64By64(**cfg.model.discriminator)
-    discrminator_128 = DiscriminatorFor128By128(**cfg.model.discriminator)
-    discrminator_256 = DiscriminatorFor256By256(**cfg.model.discriminator)
+    # discrminator_128 = DiscriminatorFor128By128(**cfg.model.discriminator)
+    # discrminator_256 = DiscriminatorFor256By256(**cfg.model.discriminator)
     relation_classifier = RelationClassifier(**cfg.model.relation_classifier)
     image_encoder = ImageEncoder(**cfg.model.image_encoder)
     speech_encoder = SpeechEncoder(**cfg.model.speech_encoder)
@@ -80,14 +80,14 @@ def main(cfg: DictConfig):
         print("Loading Discriminator 64 state dict...")
         print(discrminator_64.load_state_dict(torch.load(cfg.ckpt.discrminator_64)))
         # set_non_grad(discrminator_64)
-    if cfg.ckpt.discrminator_128:
-        print("Loading Discriminator 128 state dict...")
-        print(discrminator_128.load_state_dict(torch.load(cfg.ckpt.discrminator_128)))
-        # set_non_grad(discrminator_128)
-    if cfg.ckpt.discrminator_256:
-        print("Loading Discriminator 256 state dict...")
-        print(discrminator_256.load_state_dict(torch.load(cfg.ckpt.discrminator_256)))
-        # set_non_grad(discrminator_256)
+    # if cfg.ckpt.discrminator_128:
+    #     print("Loading Discriminator 128 state dict...")
+    #     print(discrminator_128.load_state_dict(torch.load(cfg.ckpt.discrminator_128)))
+    #     # set_non_grad(discrminator_128)
+    # if cfg.ckpt.discrminator_256:
+    #     print("Loading Discriminator 256 state dict...")
+    #     print(discrminator_256.load_state_dict(torch.load(cfg.ckpt.discrminator_256)))
+    #     # set_non_grad(discrminator_256)
     if cfg.ckpt.relation_classifier:
         print("Loading Relation Classifier state dict...")
         print(relation_classifier.load_state_dict(torch.load(cfg.ckpt.relation_classifier)))
