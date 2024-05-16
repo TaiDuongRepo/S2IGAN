@@ -3,7 +3,7 @@ from torch import nn
 
 
 class RelationClassifier(nn.Module):
-    def __init__(self, inp_dim: int = 2048, hid_dim: int = 128):
+    def __init__(self, inp_dim: int = 2048, hid_dim: int = 64):
         super().__init__()
         self.seq = nn.Sequential(
             nn.Linear(inp_dim, hid_dim),
