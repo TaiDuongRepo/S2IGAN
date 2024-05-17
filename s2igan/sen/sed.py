@@ -1,9 +1,10 @@
 from typing import List
-
 import torch
 from torch import nn
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
-
+import torchvision
+from s2igan.utils import set_non_grad
+from torchvision import models 
 
 class SpeechEncoder(nn.Module):
     def __init__(
@@ -22,18 +23,14 @@ class SpeechEncoder(nn.Module):
     ):
         super().__init__()
         assert rnn_type in ["lstm", "gru"]
-        self.cnn = nn.Sequential(
-            nn.Conv1d(input_dim, cnn_dim[0], kernel_size, stride),
-            nn.BatchNorm1d(cnn_dim[0]),
-            nn.ReLU(),  # Thêm ReLU sau lớp Convolutional đầu tiên
-            nn.Conv1d(cnn_dim[0], cnn_dim[1], kernel_size, stride),
-            nn.BatchNorm1d(cnn_dim[1]),
-            nn.ReLU()   # Thêm ReLU sau lớp Convolutional thứ hai
-        )
+        
+        self.vgg16 = models.vgg16(pretrained=False).features
+
         self.kernel_size = kernel_size
         self.stride = stride
+        
         rnn_kwargs = dict(
-            input_size=cnn_dim[1],
+            input_size=cnn_dim[1], #512
             hidden_size=rnn_dim,
             num_layers=rnn_num_layers,
             batch_first=True,
@@ -51,38 +48,23 @@ class SpeechEncoder(nn.Module):
             dropout=attn_dropout,
             batch_first=True,
         )
-
+        
     def get_params(self):
         return [p for p in self.parameters() if p.requires_grad]
 
-    def forward(self, mel_spec, mel_spec_len):
+    def forward(self, mel_spec,mel_spec_len):
         """
         mel_spec (-1, 40, len)
-        output (-1, len, rnn_dim * (int(bidirectional) + 1))
+        output (-1, len, output_dim)
         """
-        cnn_out = self.cnn(mel_spec)
-
-        # l = [
-        #     torch.div(y - self.kernel_size, self.stride, rounding_mode="trunc") + 1
-        #     for y in mel_spec_len
-        # ]
-        # l = [
-        #     torch.div(y - self.kernel_size, self.stride, rounding_mode="trunc") + 1
-        #     for y in l
-        # ]
-
+        mel_spec = mel_spec.unsqueeze(1).repeat(1, 3, 1, 1)
+        cnn_out = self.vgg16(mel_spec)
+        bs,dim,h,w = cnn_out.size()
+        cnn_out = cnn_out.view(bs,dim,h*w)
         cnn_out = cnn_out.permute(0, 2, 1)
-
-        # packed = pack_padded_sequence(
-        #     cnn_out, l, batch_first=True, enforce_sorted=False
-        # )
-        # self.rnn.flatten_parameters()
-        # out, hidden_state = self.rnn(packed)
-        # out, seq_len = pad_packed_sequence(out, batch_first=True)
-        # pack input before RNN to reduce computing efforts
         out, hidden_state = self.rnn(cnn_out)
 
         out, weights = self.self_attention(out, out, out)
-        out = out.mean(dim=1)  # mean the time step (new 27/03/2024)
+        out = out.mean(dim=1)  
         out = torch.nn.functional.normalize(out)
         return out

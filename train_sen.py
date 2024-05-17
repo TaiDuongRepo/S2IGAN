@@ -26,7 +26,7 @@ def main(cfg: DictConfig):
     attn_dropout = cfg.model.speech_encoder.attn_dropout
     rnn_dropout = cfg.model.speech_encoder.rnn_dropout
     lr = cfg.optimizer.lr
-    wandb.init(project="speech2image", name=f"SEN_bs{bs}_lr{lr}_attn{attn_heads}_ad{attn_dropout}_rd{rnn_dropout}")
+    wandb.init(project="speech2image", name=f"SEN_bs{bs}_lr{lr}_attn{attn_heads}_ad{attn_dropout}_rd{rnn_dropout}_{cfg.kaggle.user}")
 
     device = "cuda:0" if torch.cuda.is_available() else "cpu"
     multi_gpu = torch.cuda.device_count() > 1
