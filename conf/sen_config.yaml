@@ -2,12 +2,12 @@ data:
   general:
     input_size: 299
     n_fft: 512
-    n_mels: 40
-    win_length: 250
-    hop_length: 100
+    n_mels: 80
+    win_length: 400
+    hop_length: 160
     n_class: 103 # get from dataset externally
-    batch_size: 16
-    num_workers: 10
+    batch_size: 4
+    num_workers: 20
   train:
     json_file: /kaggle/input/s2igan-oxford/s2igan_oxford/train_flower_en2vi.json
     img_path: /kaggle/input/s2igan-oxford/s2igan_oxford/image_oxford/image_oxford
@@ -32,12 +32,12 @@ model:
     output_dim: 1024
   speech_encoder:
     input_dim: ${data.general.n_mels}
-    cnn_dim: [64, 128]
+    cnn_dim: [128, 512]
     kernel_size: 6
     stride: 2
     rnn_dim: 512
     rnn_num_layers: 2
-    rnn_type: gru
+    rnn_type: lstm
     rnn_dropout: 0.1
     rnn_bidirectional: True
     attn_heads: 1
@@ -47,7 +47,7 @@ model:
     out_features: ${data.general.n_class}
 
 optimizer:
-  lr: 1e-4
+  lr: 0.0001
 
 scheduler:
   use: true
