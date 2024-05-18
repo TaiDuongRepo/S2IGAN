@@ -165,7 +165,7 @@ class RDGDataset(Dataset):
 
     def __get_random_same_class__(self, label):
         data = self.data_class[label]
-        l, h = 1, 92
+        l, h = 1, 102
         return data[random.randint(l, h)]
 
     def __get_random_diff_class__(self, diff_label):
