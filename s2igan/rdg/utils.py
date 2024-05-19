@@ -9,7 +9,7 @@ def get_transform(img_dim):
     return T.Compose([T.Resize(img_dim), T.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
 
-Resizer = {64: get_transform(64), 128: get_transform(128), 256: get_transform(256)}
+Resizer = {64: get_transform(64)}#, 128: get_transform(128), 256: get_transform(256)}
 
 
 def update_D(

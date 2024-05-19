@@ -16,8 +16,8 @@ from s2igan.loss import KLDivergenceLoss, RSLoss
 from s2igan.rdg import (
     DenselyStackedGenerator,
     DiscriminatorFor64By64,
-    DiscriminatorFor128By128,
-    DiscriminatorFor256By256,
+    # DiscriminatorFor128By128,
+    # DiscriminatorFor256By256,
     RelationClassifier,
 )
 from s2igan.rdg.utils import rdg_train_epoch
